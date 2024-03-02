@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'chatbox.dart';
 
 class PatientDashboard extends StatefulWidget {
   final Map<String, dynamic> patientData;
@@ -24,45 +25,57 @@ class _PatientDashboardState extends State<PatientDashboard> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Patient Dashboard'),
-      ),
-      body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Patient Overview',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+    return Theme(
+      data: ThemeData.dark(), // Apply dark theme
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text('Patient Dashboard'),
+          leading: IconButton(
+            icon: Icon(Icons.chat_bubble_outline), // Chatbot icon
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ChatBox()),
+              );
+            },
+          ),
+        ),
+        body: SingleChildScrollView(
+          padding: EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Patient Overview',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 20.0),
-            _buildProgressChart(),
-            SizedBox(height: 20.0),
-            Text(
-              'Mood Timeline',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+              SizedBox(height: 20.0),
+              _buildProgressChart(),
+              SizedBox(height: 20.0),
+              Text(
+                'Mood Timeline',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 10.0),
-            _buildMoodTimeline(),
-            SizedBox(height: 20.0),
-            Text(
-              'Therapist Notes',
-              style: TextStyle(
-                fontSize: 24.0,
-                fontWeight: FontWeight.bold,
+              SizedBox(height: 10.0),
+              _buildMoodTimeline(),
+              SizedBox(height: 20.0),
+              Text(
+                'Therapist Notes',
+                style: TextStyle(
+                  fontSize: 24.0,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(height: 10.0),
-            _buildNotesSection(),
-          ],
+              SizedBox(height: 10.0),
+              _buildNotesSection(),
+            ],
+          ),
         ),
       ),
     );
