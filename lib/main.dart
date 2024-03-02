@@ -7,7 +7,6 @@ import 'patient/moodtracker.dart'; // Import Page2 from patient folder
 import 'patient/page3.dart'; // Import Page3 from patient folder
 import 'patient/chat.dart'; // Import Page3 from patient folder
 
-
 void main() {
   runApp(const MyApp());
 }
