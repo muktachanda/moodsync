@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'dart:math';
+import 'patient_dashboard.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -149,9 +150,17 @@ class _DashboardState extends State<Dashboard> {
                 rows: filteredPatients.map((patient) {
                   return DataRow(cells: [
                     DataCell(
-                      Text(
-                        patient['name'],
-                        style: TextStyle(fontSize: 18.0),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (context) => PatientDashboard(patient)),
+                          );
+                        },
+                        child: Text(
+                          patient['name'],
+                          style: TextStyle(fontSize: 18.0),
+                        ),
                       ),
                     ),
                     DataCell(
@@ -277,7 +286,6 @@ class _DashboardState extends State<Dashboard> {
     }
     return colors;
   }
-
 }
 
 class NotificationHistory extends StatelessWidget {
@@ -286,7 +294,7 @@ class NotificationHistory extends StatelessWidget {
     'Alice needs help.',
   ];
 
-  NotificationHistory({super.key});
+  NotificationHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
