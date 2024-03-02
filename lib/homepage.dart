@@ -21,7 +21,7 @@ class HomePage extends StatelessWidget {
                 style: ElevatedButton.styleFrom(
                   padding: EdgeInsets.symmetric(vertical: 40.0),
                 ),
-                child: Text(
+                child: const Text(
                   'Therapist',
                   style: TextStyle(fontSize: 20.0),
                 ),
