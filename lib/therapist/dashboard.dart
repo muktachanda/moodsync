@@ -322,3 +322,4 @@ class NotificationHistory extends StatelessWidget {
 void main() {
   runApp(Dashboard());
 }
+
