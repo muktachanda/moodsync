@@ -1,42 +1,100 @@
 import 'package:flutter/material.dart';
 
 class PatientScreen extends StatelessWidget {
-  const PatientScreen({super.key});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Patient Screen'),
+        backgroundColor: Colors.black, // Set app bar background color to black
+        // title: Text('Patient Screen'),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/patient/chat');
-//                 Navigator.pushNamed(context, '/patient/page1');
-              },
-              child: Text('Page 1'),
+      backgroundColor: Colors.black, // Set body background color to black
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: <Widget>[
+          Expanded(
+            child: SizedBox(
+              height: 1000, // Set the height of the button
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/patient/chat');
+                },
+                child: Text(
+                  'Messaging',
+                  style: TextStyle(fontSize: 24), // Increase text size to 24
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero, // No border radius
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.grey[900]!, // Set button background color to dark grey
+                  ),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    Colors.white, // Set button text color to white
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/patient/moodtracker');
-              },
-              child: Text('Page 2'),
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 1000, // Set the height of the button
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/patient/moodtracker');
+                },
+                child: Text(
+                  'Mood Tracker',
+                  style: TextStyle(fontSize: 24), // Increase text size to 24
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero, // No border radius
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.grey[900]!, // Set button background color to dark grey
+                  ),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    Colors.white, // Set button text color to white
+                  ),
+                ),
+              ),
             ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/patient/page3');
-              },
-              child: Text('Page 3'),
+          ),
+          Expanded(
+            child: SizedBox(
+              height: 1000, // Set the height of the button
+              child: ElevatedButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/patient/page3');
+                },
+                child: Text(
+                  'Spotify Analysis',
+                  style: TextStyle(fontSize: 24), // Increase text size to 24
+                ),
+                style: ButtonStyle(
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.zero, // No border radius
+                    ),
+                  ),
+                  backgroundColor: MaterialStateProperty.all<Color>(
+                    Colors.grey[900]!, // Set button background color to dark grey
+                  ),
+                  foregroundColor: MaterialStateProperty.all<Color>(
+                    Colors.white, // Set button text color to white
+                  ),
+                ),
+              ),
             ),
-          ],
-        ),
-      )
+          ),
+        ],
+      ),
     );
   }
 }
