@@ -20,8 +20,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/therapist_dashboard': (context) => TherapistDashboard(),
-        '/patient_screen': (context) => PatientScreen(),
+        '/therapist_dashboard': (context) => const Dashboard(),
+        '/patient_screen': (context) => const PatientScreen(),
       },
     );
   }
