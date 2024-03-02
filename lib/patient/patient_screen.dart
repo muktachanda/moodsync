@@ -36,6 +36,7 @@ class PatientScreen extends StatelessWidget {
             ),
           ],
         ),
+      )
     );
   }
 }
