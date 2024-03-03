@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'chatbox.dart';
 
-class PatientDashboard extends StatefulWidget {
+class PatientInfo extends StatefulWidget {
   final Map<String, dynamic> patientData;
 
-  PatientDashboard(this.patientData);
+  PatientInfo(this.patientData);
 
   @override
-  _PatientDashboardState createState() => _PatientDashboardState();
+  _PatientInfoState createState() => _PatientInfoState();
 }
 
-class _PatientDashboardState extends State<PatientDashboard> {
+class _PatientInfoState extends State<PatientInfo> {
   List<String> selectedMoods = []; // List to store selected moods
 
   // Sample mood data for the timeline
@@ -29,13 +29,13 @@ class _PatientDashboardState extends State<PatientDashboard> {
       data: ThemeData.dark(), // Apply dark theme
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Patient Dashboard'),
+          title: Text('Patient Information'),
           leading: IconButton(
             icon: Icon(Icons.chat_bubble_outline), // Chatbot icon
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ChatBox()),
+                MaterialPageRoute(builder: (context) => TherapistChatBox()),
               );
             },
           ),

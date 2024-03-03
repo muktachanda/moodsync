@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'dart:math';
-import 'patient_dashboard.dart';
+import 'patient_info.dart';
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -154,7 +154,7 @@ class _DashboardState extends State<Dashboard> {
                         onTap: () {
                           Navigator.push(
                             context,
-                            MaterialPageRoute(builder: (context) => PatientDashboard(patient)),
+                            MaterialPageRoute(builder: (context) => PatientInfo(patient)),
                           );
                         },
                         child: Text(

@@ -1,0 +1,22 @@
+[
+    {
+        "sender": "User",
+        "text": "hi"
+    },
+    {
+        "sender": "User",
+        "text": "Hi there. Let's go out!"
+    },
+    {
+        "sender": "User",
+        "text": "I'm feeling sad today."
+    },
+    {
+        "sender": "User",
+        "text": "I want to kill myself."
+    },
+    {
+        "sender": "User",
+        "text": "The world would be a better place without me."
+    }
+]
