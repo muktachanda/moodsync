@@ -32,42 +32,4 @@ class MyApp extends StatelessWidget {
       },
     );
   }
-
-  Widget _buildComposer() {
-    return Container(
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: Colors.grey,
-        borderRadius: BorderRadius.circular(16.0),
-      ),
-      child: Row(
-        children: <Widget>[
-          Expanded(
-            child: TextField(
-              controller: _textController,
-              decoration: InputDecoration(
-                hintText: 'Type your message...',
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(16.0),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-              onSubmitted: (text) => _handleSubmitted(text, 'User'),
-            ),
-          ),
-          IconButton(
-            icon: Icon(Icons.send),
-            onPressed: () => _handleSubmitted(_textController.text, 'User'),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class Message {
-  final String sender;
-  final String text;
-
-  Message({required this.sender, required this.text});
 }
