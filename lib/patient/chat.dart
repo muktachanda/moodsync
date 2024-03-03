@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:moodsync/therapist/dashboard.dart';
+import 'package:moodsync/therapist/dashboard.dart';
 import '../message_service.dart';
 import 'dart:convert';
+import '../therapist/dashboard.dart';
+import '../therapist/dashboard.dart';
 
 class PatientChatScreen extends StatefulWidget {
   @override
@@ -25,7 +29,8 @@ class PatientChatScreenState extends State<PatientChatScreen> {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         setState(() {
-          _messages = data.map((message) => Message(sender: message['sender'], text: message['text'])).toList().reversed.toList();
+          _messages = data.map((message) => Message(sender: message['sender'], text: message['text'])).toList();
+          _messages = _messages.reversed.toList();
         });
       } else {
         print('Failed to fetch messages: ${response.statusCode}');
@@ -54,6 +59,10 @@ class PatientChatScreenState extends State<PatientChatScreen> {
       );
       if (response.statusCode != 200) {
         print('Failed to send message: ${response.statusCode}');
+      } else {
+        // Call the endpoint to run detection
+        await http.post(Uri.parse('http://localhost:5000/api/run_detection'));
+
       }
     } catch (e) {
       print('Error sending message: $e');

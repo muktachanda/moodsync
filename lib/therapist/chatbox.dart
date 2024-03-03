@@ -26,7 +26,8 @@ class TherapistChatScreenState extends State<TherapistChatBox> {
       if (response.statusCode == 200) {
         final List<dynamic> data = jsonDecode(response.body);
         setState(() {
-          _messages = data.map((message) => Message(sender: message['sender'], text: message['text'])).toList().reversed.toList();
+          _messages = data.map((message) => Message(sender: message['sender'], text: message['text'])).toList();
+          _messages = _messages.reversed.toList();
         });
       } else {
         print('Failed to fetch messages: ${response.statusCode}');

@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pie_chart/pie_chart.dart';
 import 'dart:math';
 import 'patient_info.dart';
+import 'package:http/http.dart' as http;
 
 class Dashboard extends StatefulWidget {
   const Dashboard({Key? key}) : super(key: key);
@@ -291,13 +293,14 @@ class _DashboardState extends State<Dashboard> {
 class NotificationHistory extends StatelessWidget {
   final List<String> notificationHistory = [
     'Bob seems suicidal. Please check in with him.',
-    'Alice needs help.',
   ];
 
   NotificationHistory({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    NotificationHistory n = NotificationHistory();
+    n.checkAndGetNotifications(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Notification History'),
@@ -308,7 +311,9 @@ class NotificationHistory extends StatelessWidget {
           itemCount: notificationHistory.length,
           itemBuilder: (BuildContext context, int index) {
             return Card(
-              color: Colors.grey[800], // Card background color
+              color: notificationHistory[index].contains('at risk')
+                  ? Colors.red
+                  : Colors.grey[800], // Card background color
               child: Padding(
                 padding: EdgeInsets.all(16.0),
                 child: Text(
@@ -324,6 +329,45 @@ class NotificationHistory extends StatelessWidget {
         ),
       ),
     );
+  }
+
+
+  void checkAndGetNotifications(BuildContext context) async {
+    try {
+      final response = await http.get(
+          Uri.parse('http://localhost:5000/api/getpredictions'));
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        final predictions = data['predictions'];
+        if (predictions.contains('risk')) {
+          // Show an alert
+          showDialog(
+            context: context,
+            builder: (BuildContext context) {
+              return AlertDialog(
+                title: Text('Risk Alert'),
+                content: Text('Alice is at risk!'),
+                actions: <Widget>[
+                  TextButton(
+                    child: Text('OK'),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ],
+              );
+            },
+          );
+
+          // Add notification to history
+          notificationHistory.add('A patient is at risk.');
+        }
+      } else {
+        print('Failed to fetch predictions: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching predictions: $e');
+    }
   }
 }
 

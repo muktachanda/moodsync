@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
         '/therapist/dashboard': (context) => Dashboard(),
         '/patient/dashboard': (context) => PatientScreen(),
         '/patient/chat': (context) => PatientChatScreen(),
-        '/patient/mood-tracker': (context) => MoodTracker(),
+        '/patient/moodtracker': (context) => MoodTracker(),
         '/patient/spotify-auth': (context) => SpotifyAuth(),
       },
     );
