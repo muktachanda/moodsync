@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'homepage.dart';
 import 'therapist/dashboard.dart';
 import 'patient/patient_screen.dart';
-import 'patient/page1.dart'; // Import Page1 from patient folder
 import 'patient/moodtracker.dart'; // Import Page2 from patient folder
-import 'patient/page3.dart'; // Import Page3 from patient folder
+import 'patient/spotify_auth.dart'; // Import Page3 from patient folder
 import 'patient/chat.dart'; // Import Page3 from patient folder
 
 void main() {
@@ -24,11 +23,11 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => HomePage(),
-        '/therapist_dashboard': (context) => Dashboard(),
-        '/patient_screen': (context) => PatientScreen(),
-        '/patient/chat': (context) => ChatScreen(),
+        '/therapist/dashboard': (context) => Dashboard(),
+        '/patient/dashboard': (context) => PatientScreen(),
+        '/patient/chat': (context) => PatientChatScreen(),
         '/patient/moodtracker': (context) => MoodTracker(),
-        '/patient/page3': (context) => Page3(),
+        '/patient/spotify-auth': (context) => SpotifyAuth(),
       },
     );
   }

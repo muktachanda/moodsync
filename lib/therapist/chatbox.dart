@@ -1,139 +1,165 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import '../message_service.dart';
 
-void main() {
-  runApp(ChatBox());
-}
-
-class ChatBox extends StatelessWidget {
+class TherapistChatBox extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Chat',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: ChatScreen(),
-    );
-  }
+  State createState() => TherapistChatScreenState(); // Changed from TherapistChatScreen to TherapistChatScreenState
 }
 
-class ChatScreen extends StatefulWidget {
-  @override
-  State createState() => ChatScreenState();
-}
-
-class ChatScreenState extends State<ChatScreen> {
-  final List<Message> _messages = [];
-
+class TherapistChatScreenState extends State<TherapistChatBox> {
+  List<Message> _messages = [];
   final TextEditingController _textController = TextEditingController();
 
-  void _handleSubmitted(String text, String sender) {
-    _textController.clear();
-    setState(() {
-      if (sender == 'Therapist') {
-        _messages.insert(0, Message(sender: 'Therapist', text: text));
-        // Simulate a response from the user (you can replace this logic)
-        _messages.insert(0, Message(sender: 'User', text: 'Thank you for your advice.'));
-      } else {
-        _messages.insert(0, Message(sender: 'User', text: text));
-        // Simulate a response from the therapist (you can replace this logic)
-        _messages.insert(0, Message(sender: 'Therapist', text: 'Hi, how can I help you?'));
-      }
-    });
+  @override
+  void initState() {
+    super.initState();
+    // Fetch messages from the API when the widget initializes
+    fetchMessages();
   }
 
+  Future<void> fetchMessages() async {
+    try {
+      final response = await http.get(Uri.parse('http://localhost:5000/api/messages'));
+      if (response.statusCode == 200) {
+        final List<dynamic> data = jsonDecode(response.body);
+        setState(() {
+          _messages = data.map((message) => Message(sender: message['sender'], text: message['text'])).toList();
+          _messages = _messages.reversed.toList();
+        });
+      } else {
+        print('Failed to fetch messages: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching messages: $e');
+    }
+  }
 
+  void _handleSubmitted(String text) async {
+    _textController.clear();
+    setState(() {
+      _messages.add(Message(sender: 'Therapist', text: text)); // Append new message to the end
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse('http://localhost:5000/api/data'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(<String, String>{
+          'sender': 'Therapist',
+          'text': text,
+        }),
+      );
+      if (response.statusCode != 200) {
+        print('Failed to send message: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error sending message: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Therapist'),
+        title: Text(
+          'Therapist Chat',
+          style: TextStyle(fontSize: 25.0, fontWeight: FontWeight.bold),
+        ),
+        centerTitle: true,
       ),
-      body: Column(
-        children: <Widget>[
-          Expanded(
-            child: ListView.builder(
-              padding: const EdgeInsets.all(8.0),
-              reverse: true, // Display new messages at the bottom
-              itemCount: _messages.length,
-              itemBuilder: (_, index) => _buildMessage(_messages[index]),
+      body: Container(
+        color: Colors.black,
+        child: Column(
+          children: <Widget>[
+            Expanded(
+              child: ListView.builder(
+                padding: const EdgeInsets.all(8.0),
+                reverse: true,
+                itemCount: _messages.length,
+                itemBuilder: (_, index) => _buildMessage(_messages[index]),
+              ),
             ),
-          ),
-          _buildComposer(),
-        ],
+            _buildComposer(),
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildMessage(Message message) {
-    Color bgColor;
-    String label;
-    if (message.sender == 'Therapist') {
-      bgColor = Colors.blue.shade100; // Blue for therapist's messages
-      label = 'Therapist';
-    } else {
-      bgColor = Colors.green.shade100; // Green for user's messages
-      label = 'User';
-    }
+    Color bgColor = (message.sender == 'Therapist') ? Colors.blue.shade200 : Colors.green.shade200;
+    Color textColor = (message.sender == 'Therapist') ? Colors.black : Colors.black;
 
-    return Container(
-      margin: EdgeInsets.symmetric(vertical: 8.0),
-      padding: EdgeInsets.all(8.0),
-      decoration: BoxDecoration(
-        color: bgColor,
-        borderRadius: BorderRadius.circular(8.0),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              color: Colors.black,
+    return Align(
+      alignment: (message.sender == 'User') ? Alignment.centerLeft : Alignment.centerRight,
+      child: Container(
+        margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        padding: EdgeInsets.all(12.0),
+        decoration: BoxDecoration(
+          color: bgColor,
+          borderRadius: BorderRadius.circular(12.0),
+          border: Border.all(color: Colors.grey.shade700, width: 0.5),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              message.sender,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                color: textColor,
+                fontSize: 16.0,
+              ),
             ),
-          ),
-          SizedBox(height: 4.0),
-          Text(
-            message.text,
-            style: TextStyle(
-              color: Colors.black,
+            SizedBox(height: 4.0),
+            Text(
+              message.text,
+              style: TextStyle(
+                color: textColor,
+                fontSize: 18.0,
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildComposer() {
     return Container(
-      color:Colors.grey,
       padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.grey.shade800,
+        borderRadius: BorderRadius.circular(16.0),
+      ),
       child: Row(
         children: <Widget>[
           Expanded(
             child: TextField(
               controller: _textController,
-              decoration: InputDecoration.collapsed(
+              style: TextStyle(color: Colors.white),
+              decoration: InputDecoration(
                 hintText: 'Type your message...',
+                hintStyle: TextStyle(color: Colors.grey),
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(16.0),
+                  borderSide: BorderSide.none,
+                ),
               ),
-              onSubmitted: (text) => _handleSubmitted(text, 'User'),
+              onSubmitted: _handleSubmitted,
             ),
           ),
           IconButton(
-            icon: Icon(Icons.send),
-            onPressed: () => _handleSubmitted(_textController.text, 'User'),
+            icon: Icon(Icons.send, color: Colors.white),
+            onPressed: () => _handleSubmitted(_textController.text),
           ),
         ],
       ),
     );
   }
-}
-
-class Message {
-  final String sender;
-  final String text;
-
-  Message({required this.sender, required this.text});
 }

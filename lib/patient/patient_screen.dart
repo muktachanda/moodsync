@@ -71,7 +71,7 @@ class PatientScreen extends StatelessWidget {
               height: 1000, // Set the height of the button
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/patient/page3');
+                  Navigator.pushNamed(context, '/patient/spotify-auth');
                 },
                 child: Text(
                   'Spotify Analysis',
